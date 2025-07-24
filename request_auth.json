@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "remote-example": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "http://localhost:8000/mcp",
+        "--header",
+        "Authorization:${AUTH_HEADER}"
+      ]
+    },
+    "env": {
+      "AUTH_HEADER": "Bearer <your-token>"
+    }
+  }
+}
