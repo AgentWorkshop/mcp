@@ -14,6 +14,7 @@ This repository contains examples demonstrating how to build and interact with M
 
 *   Python 3.10+
 *   `pip` and `virtualenv` (or `pyenv`)
+*   `make` (for Linux/macOS) or a standard Windows Command Prompt
 
 ## Setup
 
@@ -23,34 +24,65 @@ This repository contains examples demonstrating how to build and interact with M
     cd mcp
     ```
 
-2.  **Create and activate a virtual environment:**
-    ```bash
-    # Using pyenv (recommended)
-    pyenv virtualenv 3.12 mcp_env
-    pyenv activate mcp_env
+2.  **Run the setup script:**
+    This will create a Python virtual environment in a `venv` directory and install all the required dependencies.
 
-    # Or using venv
-    # python3 -m venv venv
-    # source venv/bin/activate
+    **For Linux/macOS:**
+    ```bash
+    make setup
     ```
 
-3.  **Install dependencies:**
+    **For Windows:**
+    ```cmd
+    run.bat setup
+    ```
+
+3.  **Activate the virtual environment:**
+    After the setup is complete, you need to activate the environment in your shell.
+
+    **For Linux/macOS:**
     ```bash
-    pip install -r requirements.txt
+    source venv/bin/activate
+    ```
+
+    **For Windows Command Prompt:**
+    ```cmd
+    venv\Scripts\activate.bat
     ```
 
 4.  **Set up environment variables:**
     The GenAI agent client requires an API key from Google.
 
-    Create a `.env` file in the root of the project:
+    A file named `.env.example` is included in the repository. Copy it to a new file named `.env`.
+
+    On Linux/macOS:
     ```bash
-    touch .env
+    cp .env.example .env
+    ```
+    On Windows Command Prompt:
+    ```cmd
+    copy .env.example .env
     ```
 
     Add your Google AI API key to the `.env` file:
     ```
+    # .env
     GENAI_API_KEY="your_google_ai_api_key"
     ```
+
+---
+
+## How to Run the Examples
+
+This project provides convenient scripts to simplify running the examples.
+
+*   **For Linux and macOS users:** A `Makefile` is included. Use commands like `make run-remote-server`.
+*   **For Windows users:** A `run.bat` script is provided for the Command Prompt. Use commands like `run.bat run-remote-server`.
+
+The following sections show commands for both environments. The main difference to be aware of is how environment variables are set:
+
+*   **Windows (`cmd.exe`):** `set MCP_CLIENT_TOKEN=my_value`
+*   **Linux/macOS/PowerShell:** `export MCP_CLIENT_TOKEN=my_value`
 
 ---
 
@@ -63,16 +95,27 @@ This example demonstrates an MCP server integrated with FastAPI that requires be
 The server will start on `http://localhost:8000`.
 
 ```bash
-python main_remote.py
+# For Linux/macOS
+make run-remote-server
+
+# For Windows
+run.bat run-remote-server
 ```
 
 ### 2. Run the Client
 
 In a new terminal, first set the required environment variable for the authentication token. For this example, any string will work.
 
+For Linux/macOS:
 ```bash
 export MCP_CLIENT_TOKEN="my-secret-token"
-python client_remote.py
+make run-remote-client
+```
+
+For Windows Command Prompt:
+```cmd
+set MCP_CLIENT_TOKEN=my-secret-token
+run.bat run-remote-client
 ```
 
 #### Expected Output
@@ -114,17 +157,25 @@ This example showcases a more advanced use case: a standalone MCP server providi
 This server provides `get_forecast` and `get_alerts` tools. It will run on `http://localhost:8123`.
 
 ```bash
-python example/server/weather.py
+# For Linux/macOS
+make run-weather-server
+
+# For Windows
+run.bat run-weather-server
 ```
 
 ### 2. Run the Agent Client
 
 In a new terminal, run the agent client. Make sure you have set your `GENAI_API_KEY` in the `.env` file as described in the Setup section.
 
-The client will start an interactive chat loop.
+The client will start an interactive chat loop. The helper scripts run `example/client/client.py`.
 
 ```bash
-python example/client/client.py
+# For Linux/macOS
+make run-weather-client
+
+# For Windows
+run.bat run-weather-client
 ```
 
 #### Usage
